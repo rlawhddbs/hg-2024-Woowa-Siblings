@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            height: 100vh;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #ffffff;
+        }
+        .login-container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            width: 100%;
+            max-width: 320px;
+            text-align: center;
+            box-sizing: border-box;
+        }
+        .login-container input[type="email"],
+        .login-container input[type="password"] {
+            width: 100%;
+            padding: 12px;
+            margin: 8px 0;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-size: 16px;
+        }
+        .login-container button {
+            width: 100%;
+            padding: 12px;
+            background-color: #4285F4;
+            border: none;
+            border-radius: 4px;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        .login-container button:hover {
+            background-color: #357ae8;
+        }
+        .login-container .signup-link {
+            margin-top: 15px;
+            display: block;
+            font-size: 14px;
+            color: #4285F4;
+            text-decoration: none;
+        }
+        .login-container .signup-link:hover {
+            text-decoration: underline;
+        }
+        .login-container .label {
+            text-align: left;
+            font-size: 12px;
+            color: #666;
+            margin-bottom: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <div class="label">아이디 또는 이메일</div>
+        <input type="email" placeholder="example@toongether.kr">
+        
+        <div class="label">비밀번호</div>
+        <input type="password" placeholder="example1234!@">
+        
+        <button>로그인</button>
+        
+        <a href="#" class="signup-link">캔버스가 처음이신가요? 회원가입</a>
+    </div>
+</body>
+</html>
