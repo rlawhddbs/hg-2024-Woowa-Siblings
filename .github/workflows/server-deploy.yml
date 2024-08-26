@@ -19,6 +19,7 @@ jobs:
       - name: Make Env File
         run: |
           cd canbus-server
+          touch .env
           echo "${{ secrets.ENV_FILE }}" >> .env
           cat .env
           ls
