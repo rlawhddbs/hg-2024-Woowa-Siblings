@@ -17,4 +17,8 @@ app.get('/map', (req, res) => {
   res.sendFile('/Users/yunseokgyu/Develop/Hackathon/hg-2024-Woowa-Siblings/canbus-web/kakaomap/map.html')
 })
 
+app.get('/sheet', (req, res) => {
+  res.sendFile('/Users/yunseokgyu/Develop/Hackathon/hg-2024-Woowa-Siblings/canbus-web/sheet/sheet.html')
+})
+
 app.listen(3000)

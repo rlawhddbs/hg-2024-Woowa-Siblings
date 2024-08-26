@@ -3,23 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Draggable Bottom Modal Sheet</title>
+    <title>Always Open Bottom Modal Sheet</title>
+
+    <!-- Phosphor 아이콘 스타일 시트 -->
+    <link
+        rel="stylesheet"
+        type="text/css"
+        href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/bold/style.css"
+    />
+
+    <script src="https://unpkg.com/@phosphor-icons/web@2.1.1"></script>
+
     <style>
         body {
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
             height: 100vh;
-            background-color: #f0f0f0;
             display: flex;
             justify-content: center;
             align-items: center;
-        }
-
-        button {
-            padding: 10px 20px;
-            font-size: 16px;
-            cursor: pointer;
+            overflow: hidden;
         }
 
         .modal {
@@ -42,26 +46,19 @@
             pointer-events: none;
         }
 
-        .modal.show .modal-bg {
-            pointer-events: auto;
-        }
-
         .modal-content {
             width: 100%;
             background-color: white;
             padding: 0px;
-            border-radius: 15px 15px 0 0;
+            border-radius: 28px 28px 0 0;
             position: relative;
-            transform: translateY(100%);
+            transform: translateY(0);
             transition: transform 0.3s ease, height 0.3s ease;
-            min-height: 30%; /* 설정: 최소 높이 30% */
-            max-height: 80%; /* 설정: 최대 높이 90% */
+            min-height: 30%; /* 최소 높이 */
+            max-height: 80%; /* 최대 높이 */
+            box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
         }
 
-        .modal.show .modal-content {
-            transform: translateY(0);
-        }
-        
         .white-bar {
             width: 100%;
             height: 30px;
@@ -89,7 +86,7 @@
             flex-direction: column;
             width: 90%;
             max-width: 400px;
-            padding: 20px;
+            padding-bottom: 20px;
             border-radius: 10px;
             background-color: #ffffff;
             margin: 0 auto;
@@ -123,15 +120,28 @@
             z-index: 4;
         }
 
-        .input-wrapper img {
+        .input-wrapper i {
             margin-left: 10px;
+            font-size: 24px;
+            color: #5E5E5E;
             cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        /* 호버 시 색상 변경 */
+        .input-wrapper i:hover {
+            color: #0083F0;
+        }
+
+        /* 클릭 시 색상과 스타일 변경 */
+        .input-wrapper i.active {
+            color: #0083F0;
         }
 
         .input-container input::placeholder {
             color: #ccc;
         }
-        
+
         .icon {
             margin-left: 12px;
             width: 18px;
@@ -190,9 +200,7 @@
     </style>
 </head>
 <body>
-    <button id="openModalBtn">Open Modal</button>
-
-    <div id="modal" class="modal">
+    <div class="modal">
         <div class="modal-bg"></div>
         <div class="modal-content">
             <div class="white-bar">
@@ -202,19 +210,19 @@
                 <div class="input-container">
                     <div>
                         <div class="input-wrapper">
-                            <input type="text" placeholder="출발 시간을 입력하세요">
-                            <img class="icon" src="../images/ArrowsDownUp.svg">
+                            <input type="text" id="departure-time" placeholder="출발 시간을 입력하세요">
+                            <i class="ph-bold ph-clock"></i>
                         </div>
                         <div class="input-wrapper">
-                            <input type="text" placeholder="출발지를 입력하세요">
-                            <img class="icon" src="../images/iconamoon_clock.svg">
+                            <input type="text" id="departure-location" placeholder="출발지를 입력하세요">
+                            <i class="ph-bold ph-navigation-arrow"></i>
                         </div>
                         <div class="input-wrapper">
-                            <input type="text" placeholder="도착지를 입력하세요">
-                            <img class="icon" src="../images/X.svg">
+                            <input type="text" id="arrival-location" placeholder="도착지를 입력하세요">
+                            <i class="ph-bold ph-flag-pennant"></i>
                         </div>
                     </div>
-                    <button class="submit-btn">노선 신청하기</button>
+                    <button class="submit-btn" id="submit-btn">노선 신청하기</button>
                 </div>
             </div>
         </div>
@@ -222,9 +230,50 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function () {
-            const modal = document.getElementById('modal');
-            const modalBg = document.querySelector('.modal-bg');
-            const openModalBtn = document.getElementById('openModalBtn');
+            const icons = document.querySelectorAll('.input-wrapper i');
+            const submitBtn = document.getElementById('submit-btn');
+            const departureLocationInput = document.getElementById('departure-location');
+
+            // 아이콘 클릭 이벤트
+            icons.forEach(icon => {
+                icon.addEventListener('click', function () {
+                    if (this.classList.contains('active')) {
+                        this.classList.remove('active');
+                        this.classList.remove('ph-fill');
+                        this.classList.add('ph-bold');
+                    } else {
+                        icons.forEach(i => {
+                            i.classList.remove('active');
+                            i.classList.remove('ph-fill');
+                            i.classList.add('ph-bold');
+                        });
+                        this.classList.add('active');
+                        this.classList.add('ph-fill');
+                        this.classList.remove('ph-bold');
+                    }
+                });
+            });
+
+            // 입력 필드에서 Enter 키를 누를 때 이벤트 처리
+            departureLocationInput.addEventListener('keypress', function(event) {
+                if (event.key === 'Enter') {
+                    event.preventDefault(); // 기본 Enter 동작 방지
+                    sendKeyword();
+                }
+            });
+
+            // 제출 버튼 클릭 이벤트 처리
+            submitBtn.addEventListener('click', function() {
+                sendKeyword();
+            });
+
+            // 키워드를 부모 페이지로 전송하는 함수
+            function sendKeyword() {
+                var keyword = departureLocationInput.value;
+                window.parent.postMessage({ action: 'search', keyword: keyword }, '*');
+            }
+
+            const modal = document.querySelector('.modal');
             const modalContent = document.querySelector('.modal-content');
             const whiteBar = document.querySelector('.white-bar');
 
@@ -232,13 +281,12 @@
             let startY = 0;
             let startHeight = 0;
             const MIN_HEIGHT = window.innerHeight * 0.3; // 최소 높이: 화면 높이의 30%
-            const MAX_HEIGHT = window.innerHeight * 0.8; // 최대 높이: 화면 높이의 90%
+            const MAX_HEIGHT = window.innerHeight * 0.8; // 최대 높이: 화면 높이의 80%
 
             function onMouseMove(event) {
                 if (!isDragging) return;
 
                 const newHeight = Math.min(MAX_HEIGHT, Math.max(MIN_HEIGHT, startHeight - (event.clientY - startY)));
-                
                 modalContent.style.height = newHeight + 'px';
                 modalContent.style.transform = `translateY(${Math.max(0, MIN_HEIGHT - newHeight)}px)`;
             }
@@ -255,18 +303,6 @@
                 startHeight = modalContent.offsetHeight;
                 document.addEventListener('mousemove', onMouseMove);
                 document.addEventListener('mouseup', onMouseUp);
-            });
-
-            openModalBtn.addEventListener('click', function () {
-                modal.classList.add('show');
-                modalContent.style.height = MAX_HEIGHT + 'px';
-                modalContent.style.transform = `translateY(0)`;
-            });
-
-            modalBg.addEventListener('click', function () {
-                modal.classList.remove('show');
-                modalContent.style.transform = `translateY(window.innerHeight * 0.3%)`;
-                modalContent.style.height = MIN_HEIGHT + 'px';
             });
         });
     </script>
