@@ -33,5 +33,6 @@ jobs:
           resourceGroup: rg-2024-Woowa-Siblings
           imageToBuild: woowasiblings.azurecr.io/canbus-server:${{ github.sha }}
           dockerfilePath: Dockerfile
-          targetPort: 8080
-          allowInsecure: true
+
+      - name: Azure Container Apps Ingress Setting
+        run: az containerapp ingress update --name woowasiblings --resource-group rg-2024-Woowa-Siblings --target-port 8080 --allow-insecure
