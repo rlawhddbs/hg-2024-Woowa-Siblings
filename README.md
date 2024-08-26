@@ -27,8 +27,22 @@
 
 ### 사전 준비 사항
 
-> **여러분의 제품/서비스를 Microsoft 애저 클라우드에 배포하기 위해 사전에 필요한 준비 사항들을 적어주세요.**
+> 여러분의 제품/서비스를 Microsoft 애저 클라우드에 배포하기 위해 사전에 필요한 준비 사항들을 적어주세요.
+>
+
+- Github 계정
+- Azure 구독
+- MySQL Workbench, TablePlus, CLI 등 DB에 연결할 수 있는 환경 (여기서는 MySQL Workbench를 예시로 든다)
 
 ## 시작하기
 
-> **여러분의 제품/서비스를 Microsoft 애저 클라우드에 배포하기 위한 절차를 구체적으로 나열해 주세요.**
+> 여러분의 제품/서비스를 Microsoft 애저 클라우드에 배포하기 위한 절차를 구체적으로 나열해 주세요.
+>
+
+**INFRA -> SERVER -> WEB 순으로 진행하셔야 합니다**
+
+[인프라 배포하기](INFRA_DEPLOY.md)
+
+[서버 배포하기](SERVER_DEPLOY.md)
+
+[웹 배포하기](WEB_DEPLOY.md)
