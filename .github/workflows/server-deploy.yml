@@ -18,10 +18,12 @@ jobs:
 
       - name: Make Env File
         run: |
-          echo "${{ secrets.ENV_FILE }}" > ./canbus-server/.env
-          cat ./canbus-server/.env
           cd canbus-server
+          echo "REACT_APP_DOMAIN=$REACT_APP_DOMAIN" >> .env
+          cat .env
           ls
+        env:
+          REACT_APP_DOMAIN: ${{ secrets.ENV_FILE }}
 
       - name: Check out code
         uses: actions/checkout@v2
