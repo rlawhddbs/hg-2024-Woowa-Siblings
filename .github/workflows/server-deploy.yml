@@ -25,3 +25,4 @@ jobs:
           containerAppName: canbus-server
           resourceGroup: rg-2024-Woowa-Siblings
           imageToDeploy: woowasiblings.azurecr.io/samples/hello-world
+          builderStack: ubuntu:latest
