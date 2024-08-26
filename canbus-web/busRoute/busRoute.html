@@ -23,6 +23,7 @@
             flex-direction: column;
             position: relative;
             gap: 4px;
+            flex-grow: 1;
         }
 
         .item {
@@ -100,6 +101,7 @@
             margin-left: 0.25rem;
             margin-bottom: -5px;
         }
+
         .bus-number {
             font-size: 1.125rem;
             font-weight: 500;
@@ -121,6 +123,21 @@
             height: 2px;
             background-color: #e0e0e0;
             margin: 1rem 0;
+        }
+
+        .schedule-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .navi-icon {
+            margin-left: 20px;
+        }
+
+        .navi-icon img {
+            width: 24px;
+            height: 24px;
         }
 
         /* Responsive styles */
@@ -177,8 +194,8 @@
 
             .item p {
                 font-size: 14px;
-
             }
+
             .item a {
                 font-size: 10px;
             }
@@ -198,48 +215,8 @@
                     { name: "의성(터미널)", time: "오후 6시" },
                     { name: "의성 농공 단지", time: "오후 6시 15분" },
                     { name: "봉양", time: "오후 7시" },
-                ],
-            },
-            {
-                duration: "2시간",
-                timeRange: "오후 5시 - 오후 7시",
-                busNumber: "3호차",
-                stations: [
-                    { name: "서울(터미널)", time: "오후 5시" },
-                    { name: "수원 농공 단지", time: "오후 6시" },
-                    { name: "평택", time: "오후 7시" },
-                ],
-            },
-            {
-                duration: "1시간 45분",
-                timeRange: "오후 4시 30분 - 오후 6시 15분",
-                busNumber: "2호차",
-                stations: [
-                    { name: "대전(터미널)", time: "오후 4시 30분" },
-                    { name: "청주 농공 단지", time: "오후 5시 30분" },
-                    { name: "천안", time: "오후 6시 15분" },
-                ],
-            },
-            {
-                duration: "1시간 15분",
-                timeRange: "오후 7시 - 오후 8시 15분",
-                busNumber: "4호차",
-                stations: [
-                    { name: "광주(터미널)", time: "오후 7시" },
-                    { name: "나주 농공 단지", time: "오후 7시 45분" },
-                    { name: "목포", time: "오후 8시 15분" },
-                ],
-            },
-            {
-                duration: "1시간 50분",
-                timeRange: "오후 3시 - 오후 4시 50분",
-                busNumber: "6호차",
-                stations: [
-                    { name: "부산(터미널)", time: "오후 3시" },
-                    { name: "양산 농공 단지", time: "오후 3시 50분" },
-                    { name: "울산", time: "오후 4시 50분" },
-                ],
-            },
+                ]
+            }
         ];
 
         const container = document.getElementById("schedulesContainer");
@@ -253,22 +230,27 @@
                         </div>
                         <div class="bus-number">${schedule.busNumber}</div>
                     </div>
-                    <div class="container">
-                        ${schedule.stations
-                          .map(
-                            (station) => `
-                            <div class="item">
-                                <div class="circle"></div>
-                                <p>${station.name}</p>
-                                <a class="station-time">${station.time}</a>
-                            </div>
-                        `
-                          )
-                          .join("")}
-                        <div class="line"></div>
+                    <div class="schedule-content">
+                        <div class="container">
+                            ${schedule.stations
+                              .map(
+                                (station) => `
+                                <div class="item">
+                                    <div class="circle"></div>
+                                    <p>${station.name}</p>
+                                    <a class="station-time">${station.time}</a>
+                                </div>
+                                `
+                              )
+                              .join("")}
+                            <div class="line"></div>
+                        </div>
+                        <div class="navi-icon">
+                            <img src="../images/Navi.svg">
+                        </div>
                     </div>
+                    <div class="separator"></div>
                 </div>
-                <div class="separator"></div>
             `;
             container.innerHTML += scheduleHTML;
         });

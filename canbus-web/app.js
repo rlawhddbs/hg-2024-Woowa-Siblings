@@ -27,7 +27,10 @@ const express = require('express')
     res.sendFile(path.join(__dirname, 'busRoute', 'busRouteSheet.html'));
   });
   
-
+  app.get('/busRoute', (req, res) => {
+    res.sendFile(path.join(__dirname, 'busRoute', 'busRoute.html'));
+  });
+  
   // 서버 시작
   app.listen(3000, () => {
     console.log('Server running on port 3000');
