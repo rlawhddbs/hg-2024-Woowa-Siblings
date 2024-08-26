@@ -54,7 +54,8 @@
             position: relative;
             transform: translateY(100%);
             transition: transform 0.3s ease, height 0.3s ease;
-            min-height: 230px;
+            min-height: 30%; /* 설정: 최소 높이 30% */
+            max-height: 80%; /* 설정: 최대 높이 90% */
         }
 
         .modal.show .modal-content {
@@ -65,9 +66,9 @@
             width: 100%;
             height: 30px;
             display: flex;
-            justify-content: center; /* Align horizontally to center */
-            align-items: center;    /* Align vertically to center */
-            cursor: grab; /* Add cursor style for dragging */
+            justify-content: center;
+            align-items: center;
+            cursor: grab;
         }
 
         .gray-bar {
@@ -82,6 +83,110 @@
         .white-bar:active {
             cursor: grabbing;
         }
+
+        .input-container {
+            display: flex;
+            flex-direction: column;
+            width: 90%;
+            max-width: 400px;
+            padding: 20px;
+            border-radius: 10px;
+            background-color: #ffffff;
+            margin: 0 auto;
+        }
+
+        .input-wrapper {
+            display: flex;
+            align-items: center;
+        }
+
+        .input-wrapper input { 
+            width: 100%;
+            flex: 1;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-bottom: none;
+            border-radius: 0;
+            outline: none;
+        }
+
+        .input-wrapper:first-child input {
+            border-top-left-radius: 5px;
+            border-top-right-radius: 5px;
+        }
+
+        .input-wrapper:last-child input {
+            border-bottom: 1px solid #ccc;
+            border-bottom-left-radius: 5px;
+            border-bottom-right-radius: 5px;
+            z-index: 4;
+        }
+
+        .input-wrapper img {
+            margin-left: 10px;
+            cursor: pointer;
+        }
+
+        .input-container input::placeholder {
+            color: #ccc;
+        }
+        
+        .icon {
+            margin-left: 12px;
+            width: 18px;
+            height: 18px;
+        }
+
+        .submit-btn {
+            margin-top: 16px;
+            width: 100%;
+            height: 48px;
+            padding: 15px;
+            background-color: #4285F4;
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .submit-btn:hover {
+            background-color: #357ae8;
+        }
+
+        /* Responsive styles */
+        @media (max-width: 768px) {
+            .modal-content {
+                min-height: 40%; /* 768px 이하일 때 최소 높이 40% */
+            }
+            .submit-btn {
+                font-size: 16px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .modal-content {
+                min-height: 50%; /* 480px 이하일 때 최소 높이 50% */
+            }
+            .white-bar {
+                height: 25px;
+            }
+            .gray-bar {
+                width: 30px;
+                height: 3px;
+            }
+            .input-wrapper input {
+                padding: 8px;
+                font-size: 14px;
+            }
+            .submit-btn {
+                font-size: 14px;
+                height: 44px;
+                padding: 12px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -94,7 +199,23 @@
                 <div class="gray-bar"></div>
             </div>
             <div>
-
+                <div class="input-container">
+                    <div>
+                        <div class="input-wrapper">
+                            <input type="text" placeholder="출발 시간을 입력하세요">
+                            <img class="icon" src="../images/ArrowsDownUp.svg">
+                        </div>
+                        <div class="input-wrapper">
+                            <input type="text" placeholder="출발지를 입력하세요">
+                            <img class="icon" src="../images/iconamoon_clock.svg">
+                        </div>
+                        <div class="input-wrapper">
+                            <input type="text" placeholder="도착지를 입력하세요">
+                            <img class="icon" src="../images/X.svg">
+                        </div>
+                    </div>
+                    <button class="submit-btn">노선 신청하기</button>
+                </div>
             </div>
         </div>
     </div>
@@ -110,16 +231,14 @@
             let isDragging = false;
             let startY = 0;
             let startHeight = 0;
-            const MIN_HEIGHT = 230;
-            const MAX_HEIGHT = 700;
+            const MIN_HEIGHT = window.innerHeight * 0.3; // 최소 높이: 화면 높이의 30%
+            const MAX_HEIGHT = window.innerHeight * 0.8; // 최대 높이: 화면 높이의 90%
 
             function onMouseMove(event) {
                 if (!isDragging) return;
 
-                // Calculate new height and ensure it is not below MIN_HEIGHT
                 const newHeight = Math.min(MAX_HEIGHT, Math.max(MIN_HEIGHT, startHeight - (event.clientY - startY)));
                 
-                // Adjust the height and translateY
                 modalContent.style.height = newHeight + 'px';
                 modalContent.style.transform = `translateY(${Math.max(0, MIN_HEIGHT - newHeight)}px)`;
             }
@@ -140,12 +259,14 @@
 
             openModalBtn.addEventListener('click', function () {
                 modal.classList.add('show');
-                modalContent.style.height = MAX_HEIGHT + 'px'; // Set to maximum height when opened
+                modalContent.style.height = MAX_HEIGHT + 'px';
                 modalContent.style.transform = `translateY(0)`;
             });
 
             modalBg.addEventListener('click', function () {
-                closeModalBtn.click(); // Trigger close button functionality
+                modal.classList.remove('show');
+                modalContent.style.transform = `translateY(window.innerHeight * 0.3%)`;
+                modalContent.style.height = MIN_HEIGHT + 'px';
             });
         });
     </script>
