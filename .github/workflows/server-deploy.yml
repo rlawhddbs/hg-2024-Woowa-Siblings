@@ -21,7 +21,7 @@ jobs:
       - name: Build and deploy Container App
         uses: azure/container-apps-deploy-action@v1
         with:
-          appSourcePath: ${{ github.workspace }}/canbus-server
           acrName: woowasiblings
           containerAppName: canbus-server
           resourceGroup: rg-2024-Woowa-Siblings
+          imageToDeploy: woowasiblings.azurecr.io/app:${{ github.sha }}
