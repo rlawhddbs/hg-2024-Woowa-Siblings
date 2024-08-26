@@ -35,4 +35,4 @@ jobs:
           dockerfilePath: Dockerfile
 
       - name: Azure Container Apps Ingress Setting
-        run: az containerapp ingress update --name woowasiblings --resource-group rg-2024-Woowa-Siblings --target-port 8080 --allow-insecure
+        run: az containerapp ingress update --name canbus-server --resource-group rg-2024-Woowa-Siblings --target-port 8080 --allow-insecure
