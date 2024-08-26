@@ -11,6 +11,12 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
+    env:
+        TEAM_NAME: woowasiblings
+        APP_NAME: canbus-server
+        APP_ENV: canbus-server-env
+        RG_NAME: rg-2024-Woowa-Siblings
+
     steps:
 
       - name: Check out code
@@ -29,15 +35,15 @@ jobs:
       - name: Build and deploy Container App
         uses: azure/container-apps-deploy-action@v0
         with:
-          appSourcePath: ${{ github.workspace }}/canbus-server
-          acrName: woowasiblings
+          appSourcePath: ${{ github.workspace }}/${{ env.APP_NAME }}
+          acrName: ${{ env.TEAM_NAME }}
           acrUsername: ${{ secrets.ACR_USERNAME }}
           acrPassword: ${{ secrets.ACR_PASSWORD }}
-          containerAppName: canbus-server
-          containerAppEnvironment: canbus-server-env
-          resourceGroup: rg-2024-Woowa-Siblings
-          imageToBuild: woowasiblings.azurecr.io/canbus-server:${{ github.sha }}
+          containerAppName: ${{ env.APP_NAME }}
+          containerAppEnvironment: ${{ env.APP_ENV }}
+          resourceGroup: ${{ env.RG_NAME }}
+          imageToBuild: ${{ env.TEAM_NAME }}.azurecr.io/${{ env.APP_NAME }}:${{ github.sha }}
           dockerfilePath: Dockerfile
 
-      # - name: Azure Container Apps Ingress Setting
-      #   run: az containerapp ingress update --name canbus-server --resource-group rg-2024-Woowa-Siblings --target-port 8080 --allow-insecure
+      - name: Azure Container Apps Ingress Setting
+        run: az containerapp ingress update --name ${{ env.APP_NAME }} --resource-group ${{ env.RG_NAME }} --target-port 8080 --allow-insecure
