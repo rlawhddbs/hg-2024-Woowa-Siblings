@@ -33,3 +33,4 @@ jobs:
           resourceGroup: rg-2024-Woowa-Siblings
           imageToBuild: woowasiblings.azurecr.io/canbus-server:${{ github.sha }}
           dockerfilePath: Dockerfile
+          targetPort: 8080
