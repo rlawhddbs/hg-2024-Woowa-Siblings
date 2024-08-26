@@ -5,6 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Form Example</title>
         <style>
+            .gray-bar {
+                width: 35px;
+                height: 4px;
+                position: relative;
+                background: #DCDDDE;
+                border-radius: 8px;
+                margin-bottom: 16px;
+                align-self: center;
+            }
+
             .input-container {
                 display: flex;
                 flex-direction: column;
@@ -12,6 +22,7 @@
                 padding: 20px;
                 border-radius: 10px;
                 background-color: #ffffff;
+                align-self: center;
             }
 
             .input-wrapper {
@@ -78,6 +89,7 @@
     </head>
     <body>
     <div class="input-container">
+        <div class="gray-bar"></div>
         <div>
             <div class="input-wrapper">
                 <input type="text" placeholder="출발 시간을 입력하세요">
