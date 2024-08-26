@@ -1,5 +1,4 @@
-
-  const express = require('express')
+const express = require('express')
   const path = require('path');
   const app = express()
 
@@ -23,6 +22,11 @@
   app.get('/sheet', (req, res) => {
     res.sendFile(path.join(__dirname, 'sheet', 'sheet.html'));
   });
+
+  app.get('/mybus', (req, res) => {
+    res.sendFile(path.join(__dirname, 'busRoute', 'busRouteSheet.html'));
+  });
+  
 
   // 서버 시작
   app.listen(3000, () => {

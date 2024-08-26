@@ -13,10 +13,4 @@ class User(
 
     val password: String,
 
-    val email: String,
-
-    val nickname: String,
-
-    val profileImage: String? = null,
-
 )
