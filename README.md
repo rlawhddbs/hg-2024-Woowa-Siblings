@@ -38,6 +38,10 @@
     - 본인의 운영체제에 맞는 버전을 선택해주세요
     - Download 버튼을 눌러 설치 패키지를 다운로드 받고 패키지를 실행해 설치 프로세스를 따라 설치해주세요
 
+    - [Windows 설치 가이드](WORKBENCH_INSTALL_WIN.md)
+
+    - [Mac 설치 가이드](WORKBENCH_INSTALL_MAC.md)
+
 ## 시작하기
 
 > 여러분의 제품/서비스를 Microsoft 애저 클라우드에 배포하기 위한 절차를 구체적으로 나열해 주세요.
