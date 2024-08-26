@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>캔버스</title>
+    
+    <!-- Pretendard 웹폰트 링크 -->
+    <link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/variable/pretendardvariable.css" rel="stylesheet">
+
+    <!-- Phosphor 아이콘 스타일 시트 -->
+    <link
+        rel="stylesheet"
+        type="text/css"
+        href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/bold/style.css"
+    />
+
+    <script src="https://unpkg.com/@phosphor-icons/web@2.1.1"></script>
+
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Pretendard', sans-serif;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* 페이지 스타일 */
+        .page {
+            display: none; /* 기본적으로 페이지를 숨김 */
+            width: 100%;
+            height: calc(100vh - 50px); /* 네비게이션 바 높이를 제외한 높이 */
+            text-align: center;
+            font-size: 2em;
+            margin-bottom: 55px;
+            overflow: auto; /* 스크롤이 필요한 경우를 대비하여 추가 */
+        }
+
+        .page.active {
+            display: block; /* 선택된 페이지만 보이도록 설정 */
+        }
+
+        .page-2 {
+            background-color: #dff4f4;
+        }
+
+        .page-3 {
+            background-color: #f4dfdf;
+        }
+
+        /* 네비게이션 바 스타일 */
+        .nav-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background-color: #fff;
+            border-top: 1px solid #ddd;
+            display: flex;
+            justify-content: space-around;
+            padding: 10px 0;
+            box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+            font-size: 10px; /* 폰트 크기 10px */
+            z-index: 10; /* 네비게이션 바를 다른 요소 위에 표시 */
+        }
+
+        .nav-item {
+            text-align: center;
+            color: #333;
+            cursor: pointer; /* 클릭 가능한 항목 표시 */
+            transition: color 0.3s;
+        }
+
+        .nav-item i {
+            display: block;
+            margin: 0 auto;
+            font-size: 24px; /* 아이콘 크기 */
+        }
+
+        .nav-item span {
+            display: block;
+            margin-top: 5px;
+            font-weight: 400; /* 기본적으로 Regular */
+        }
+
+        .nav-item.active span {
+            font-weight: 500; /* 선택된 아이템은 Medium */
+        }
+
+        .nav-item:hover {
+            color: #007bff; /* 호버 시 색상 변경 */
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 페이지 컨텐츠 -->
+    <iframe id="page1" class="page page-1" src="/map"></iframe>
+    <div id="page2" class="page page-2">내 버스 페이지</div>
+    <div id="page3" class="page page-3">버스 노선 페이지</div>
+
+    <!-- 네비게이션 바 -->
+    <div class="nav-bar">
+        <div class="nav-item" data-target="page1">
+            <i class="ph-light ph-calendar-plus" alt="노선 신청"></i>
+            <span>노선 신청</span>
+        </div>
+        <div class="nav-item" data-target="page2">
+            <i class="ph-light ph-bus" alt="내 버스"></i>
+            <span>내 버스</span>
+        </div>
+        <div class="nav-item" data-target="page3">
+            <i class="ph-light ph-road-horizon" alt="버스 노선"></i>
+            <span>버스 노선</span>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const navItems = document.querySelectorAll('.nav-item');
+            const pages = document.querySelectorAll('.page');
+
+            // 아이콘 파일 경로 매핑
+            const iconMap = {
+                page1: {
+                    fill: "ph-fill ph-calendar-plus",
+                    outline: "ph-light ph-calendar-plus"
+                },
+                page2: {
+                    fill: "ph-fill ph-bus",
+                    outline: "ph-light ph-bus"
+                },
+                page3: {
+                    fill: "ph-fill ph-road-horizon",
+                    outline: "ph-light ph-road-horizon"
+                }
+            };
+
+            // 페이지 로드 시, 저장된 탭 정보를 가져와서 활성화
+            const savedPage = localStorage.getItem('selectedPage') || 'page1'; // 기본값은 page1
+            const activePage = document.getElementById(savedPage);
+            const activeNavItem = document.querySelector(`.nav-item[data-target=${savedPage}]`);
+
+            if (activePage && activeNavItem) {
+                activePage.classList.add('active');
+                activeNavItem.classList.add('active');
+                activeNavItem.querySelector('i').className = iconMap[savedPage].fill;
+            }
+
+            navItems.forEach(item => {
+                item.addEventListener('click', function() {
+                    // 모든 아이템과 페이지에서 active 클래스 제거
+                    navItems.forEach(i => {
+                        i.classList.remove('active');
+                        const target = i.getAttribute('data-target');
+                        const icon = i.querySelector('i');
+                        icon.className = iconMap[target].outline; // Outline 아이콘으로 변경
+                    });
+
+                    pages.forEach(page => page.classList.remove('active'));
+
+                    // 클릭된 아이템에 active 클래스 추가
+                    this.classList.add('active');
+
+                    // 클릭된 아이템에 대응하는 페이지 활성화
+                    const targetPage = this.getAttribute('data-target');
+                    document.getElementById(targetPage).classList.add('active');
+
+                    // 클릭된 아이템의 아이콘을 Fill 아이콘으로 변경
+                    const icon = this.querySelector('i');
+                    icon.className = iconMap[targetPage].fill;
+
+                    // 선택된 탭 정보를 localStorage에 저장
+                    localStorage.setItem('selectedPage', targetPage);
+                });
+            });
+        });
+    </script>
+
+</body>
+</html>
