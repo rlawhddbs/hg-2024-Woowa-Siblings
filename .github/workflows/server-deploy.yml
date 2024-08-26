@@ -16,6 +16,11 @@ jobs:
       - name: Check out code
         uses: actions/checkout@v2
 
+      - name: Make Env File
+        run: |
+          touch canbus-server/.env
+          echo "${{ secrets.ENV_FILE }}" >> canbus-server/.env
+
       - name: Log in to Azure
         uses: azure/login@v1
         with:
@@ -26,8 +31,13 @@ jobs:
         with:
           appSourcePath: ${{ github.workspace }}/canbus-server
           acrName: woowasiblings
+          acrUsername: ${{ secrets.ACR_USERNAME }}
+          acrPassword: ${{ secrets.ACR_PASSWORD }}
           containerAppName: canbus-server
           containerAppEnvironment: canbus-server-env
           resourceGroup: rg-2024-Woowa-Siblings
           imageToBuild: woowasiblings.azurecr.io/canbus-server:${{ github.sha }}
           dockerfilePath: Dockerfile
+
+      # - name: Azure Container Apps Ingress Setting
+      #   run: az containerapp ingress update --name canbus-server --resource-group rg-2024-Woowa-Siblings --target-port 8080 --allow-insecure
