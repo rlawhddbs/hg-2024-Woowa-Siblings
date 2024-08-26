@@ -1,0 +1,27 @@
+name: If push to the main, deploy it
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "canbus-server/**"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+
+      - name: Log in to Azure
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Build and deploy Container App
+        uses: azure/container-apps-deploy-action@v1
+        with:
+          appSourcePath: ${{ github.workspace }}/canbus-server
+          acrName: woowasiblings
+          containerAppName: canbus-server
+          resourceGroup: rg-2024-Woowa-Siblings
