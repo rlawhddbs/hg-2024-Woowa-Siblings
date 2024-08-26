@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Draggable Bottom Modal Sheet</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            background-color: #f0f0f0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .modal {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            display: flex;
+            justify-content: flex-end;
+            transition: height 0.3s ease;
+        }
+
+        .modal-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            transition: background-color 0.3s ease;
+            pointer-events: none;
+        }
+
+        .modal.show .modal-bg {
+            pointer-events: auto;
+        }
+
+        .modal-content {
+            width: 100%;
+            background-color: white;
+            padding: 0px;
+            border-radius: 15px 15px 0 0;
+            position: relative;
+            transform: translateY(100%);
+            transition: transform 0.3s ease, height 0.3s ease;
+            min-height: 230px;
+        }
+
+        .modal.show .modal-content {
+            transform: translateY(0);
+        }
+        
+        .white-bar {
+            width: 100%;
+            height: 30px;
+            display: flex;
+            justify-content: center; /* Align horizontally to center */
+            align-items: center;    /* Align vertically to center */
+            cursor: grab; /* Add cursor style for dragging */
+        }
+
+        .gray-bar {
+            width: 35px;
+            height: 4px;
+            background: #DCDDDE;
+            border-radius: 8px;
+            margin-top: 12px;
+            margin-bottom: 16px;
+        }
+
+        .white-bar:active {
+            cursor: grabbing;
+        }
+    </style>
+</head>
+<body>
+    <button id="openModalBtn">Open Modal</button>
+
+    <div id="modal" class="modal">
+        <div class="modal-bg"></div>
+        <div class="modal-content">
+            <div class="white-bar">
+                <div class="gray-bar"></div>
+            </div>
+            <div>
+
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const modal = document.getElementById('modal');
+            const modalBg = document.querySelector('.modal-bg');
+            const openModalBtn = document.getElementById('openModalBtn');
+            const modalContent = document.querySelector('.modal-content');
+            const whiteBar = document.querySelector('.white-bar');
+
+            let isDragging = false;
+            let startY = 0;
+            let startHeight = 0;
+            const MIN_HEIGHT = 230;
+            const MAX_HEIGHT = 700;
+
+            function onMouseMove(event) {
+                if (!isDragging) return;
+
+                // Calculate new height and ensure it is not below MIN_HEIGHT
+                const newHeight = Math.min(MAX_HEIGHT, Math.max(MIN_HEIGHT, startHeight - (event.clientY - startY)));
+                
+                // Adjust the height and translateY
+                modalContent.style.height = newHeight + 'px';
+                modalContent.style.transform = `translateY(${Math.max(0, MIN_HEIGHT - newHeight)}px)`;
+            }
+
+            function onMouseUp() {
+                isDragging = false;
+                document.removeEventListener('mousemove', onMouseMove);
+                document.removeEventListener('mouseup', onMouseUp);
+            }
+
+            whiteBar.addEventListener('mousedown', function (event) {
+                isDragging = true;
+                startY = event.clientY;
+                startHeight = modalContent.offsetHeight;
+                document.addEventListener('mousemove', onMouseMove);
+                document.addEventListener('mouseup', onMouseUp);
+            });
+
+            openModalBtn.addEventListener('click', function () {
+                modal.classList.add('show');
+                modalContent.style.height = MAX_HEIGHT + 'px'; // Set to maximum height when opened
+                modalContent.style.transform = `translateY(0)`;
+            });
+
+            modalBg.addEventListener('click', function () {
+                closeModalBtn.click(); // Trigger close button functionality
+            });
+        });
+    </script>
+</body>
+</html>
