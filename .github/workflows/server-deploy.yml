@@ -4,8 +4,8 @@ on:
   push:
     branches:
       - main
-    # paths:
-    #   - "canbus-server/**"
+    paths:
+      - "canbus-server/**"
 
 jobs:
   build:
@@ -29,8 +29,9 @@ jobs:
           acrUsername: ${{ secrets.ACR_USERNAME }}
           acrPassword: ${{ secrets.ACR_PASSWORD }}
           containerAppName: canbus-server
-          containerAppEnvironment: canbus-server-envi
+          containerAppEnvironment: canbus-server-env
           resourceGroup: rg-2024-Woowa-Siblings
           imageToBuild: woowasiblings.azurecr.io/canbus-server:${{ github.sha }}
           dockerfilePath: Dockerfile
           targetPort: 8080
+          allowInsecure: true
