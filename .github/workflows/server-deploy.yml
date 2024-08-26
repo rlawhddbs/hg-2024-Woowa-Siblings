@@ -29,5 +29,5 @@ jobs:
           containerAppName: canbus-server
           containerAppEnvironment: canbus-server-env
           resourceGroup: rg-2024-Woowa-Siblings
-          imageToBuild: woowasiblings.azurecr.io/canbus-server:<Tag e.g. ${{ github.sha }}>
+          imageToBuild: woowasiblings.azurecr.io/canbus-server:${{ github.sha }}
           dockerfilePath: ${{ github.workspace }}/canbus-server/Dockerfile
