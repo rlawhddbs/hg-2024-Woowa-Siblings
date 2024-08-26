@@ -20,6 +20,7 @@ jobs:
         run: |
           echo "${{ secrets.ENV_FILE }}" > ./canbus-server/.env
           cat ./canbus-server/.env
+          cd canbus-server
           ls
 
       - name: Check out code
