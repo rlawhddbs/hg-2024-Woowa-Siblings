@@ -18,10 +18,9 @@ jobs:
 
       - name: Make Env File
         run: |
+          touch canbus-server/.env
+          echo "${{ secrets.ENV_FILE }}" >> canbus-server/.env
           cd canbus-server
-          touch .env
-          echo "${{ secrets.ENV_FILE }}" >> .env
-          cat .env
           ls -a
           
       # - name: Check out code
