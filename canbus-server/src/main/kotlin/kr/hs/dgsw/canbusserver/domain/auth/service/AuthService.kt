@@ -1,16 +1,15 @@
 package kr.hs.dgsw.canbusserver.domain.auth.service
 
-import kr.hs.dgsw.canbusserver.domain.auth.exception.EmailExistsException
 import kr.hs.dgsw.canbusserver.domain.auth.exception.PasswordNotMatchedException
 import kr.hs.dgsw.canbusserver.domain.auth.exception.UserIdExistsException
 import kr.hs.dgsw.canbusserver.domain.auth.exception.UserNotFoundException
 import kr.hs.dgsw.canbusserver.domain.auth.presentation.dto.request.LoginRequest
+import kr.hs.dgsw.canbusserver.domain.auth.presentation.dto.request.SignupRequest
 import kr.hs.dgsw.canbusserver.domain.auth.presentation.dto.response.TokenResponse
 import kr.hs.dgsw.canbusserver.domain.user.User
 import kr.hs.dgsw.canbusserver.domain.user.UserRepository
 import kr.hs.dgsw.canbusserver.global.encrypt.EncryptUtil
 import kr.hs.dgsw.canbusserver.global.security.jwt.JwtUtil
-import kr.hs.dgsw.canbusserver.domain.auth.presentation.dto.request.SignupRequest
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -43,17 +42,11 @@ class AuthService(
             throw UserIdExistsException()
         }
 
-        if (userRepository.existsByEmail(request.email)) {
-            throw EmailExistsException()
-        }
-
         val encryptedPassword: String = encryptUtil.encode(request.password)
 
         val user = User(
             identifier = request.identifier,
             password = encryptedPassword,
-            nickname = request.nickname,
-            email = request.email,
         )
 
         userRepository.save(user)
