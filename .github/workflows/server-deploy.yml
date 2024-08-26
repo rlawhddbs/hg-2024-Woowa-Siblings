@@ -26,6 +26,8 @@ jobs:
         with:
           appSourcePath: ${{ github.workspace }}/canbus-server
           acrName: woowasiblings
+          acrUsername: ${{ secrets.ACR_USERNAME }}
+          acrPassword: ${{ secrets.ACR_PASSWORD }}
           containerAppName: canbus-server
           containerAppEnvironment: canbus-server-env
           resourceGroup: rg-2024-Woowa-Siblings
